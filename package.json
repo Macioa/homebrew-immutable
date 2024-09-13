@@ -1,0 +1,12 @@
+{
+  "name": "homebrew-immutable",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "brew uninstall immutable; brew cleanup; brew install --build-from-source ./immutable.rb",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

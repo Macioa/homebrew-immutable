@@ -1,7 +1,7 @@
 class Immutable < Formula
     desc "Setup development environment with Homebrew, asdf, Erlang, Elixir, Node.js, and more"
     homepage "https://github.com/macioa/immutablestack"
-    url "file://#{File.expand_path("ImmutableStack-v0.0.2.tar.gz", __dir__)}"
+    url "file://#{File.expand_path("ImmutableStack-v0.0.16.tar.gz", __dir__)}"
     sha256 "1d17a957e4c1a233aa093ff7d84044a3315cf6d1f0546134df3a4e2a0f72a371"
     license "Apache-2.0"
     version "0.0.0"
@@ -16,6 +16,8 @@ class Immutable < Formula
       bin.install "versions.sh"
       bin.install "gen_toolkit.sh"
       bin.install "genfile.js"
+      bin.install "gen.js"
+      
       (bin/"immutable").write <<~EOS
         #!/bin/bash
         if [ "$1" == "-install" ]; then
@@ -27,6 +29,8 @@ class Immutable < Formula
           "$(brew --prefix)/bin/gen_toolkit.sh" "$2_umbrella"
         elif [ "$1" == "-genfile" ]; then
           node "$(brew --prefix)/bin/genfile.js" "$2"
+        elif [ "$1" == "-gen" ]; then
+          node "$(brew --prefix)/bin/gen" "$2"
         else
           echo "
             Usage: 
@@ -34,6 +38,7 @@ class Immutable < Formula
               immutable -devkit                 # Install external dev tools (optional)
               immutable -init _my_proj_name     # Initialize a new project
               immutable -genfile _my_genname    # Create a generator file
+              immutable -gen _my_genfile_path   # Run generator with generator file
           "
         fi
       EOS
