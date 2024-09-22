@@ -1,8 +1,8 @@
 class Immutable < Formula
     desc "Setup development environment with Homebrew, asdf, Erlang, Elixir, Node.js, and more"
     homepage "https://github.com/macioa/immutablestack"
-    url "file://#{File.expand_path("ImmutableStack-v0.0.16.tar.gz", __dir__)}"
-    sha256 "1d17a957e4c1a233aa093ff7d84044a3315cf6d1f0546134df3a4e2a0f72a371"
+    url "file://#{File.expand_path("ImmutableStack-v0.1.0.tar.gz", __dir__)}"
+    # sha256 "88b621cffba66e524a54dfa21b890e36f39acf9f39c5f2c8b9f6f68df23c8048"
     license "Apache-2.0"
     version "0.0.0"
   
@@ -12,7 +12,7 @@ class Immutable < Formula
     def install
       bin.install "start_macos.sh"
       bin.install "dev_kit_macos.sh"
-      bin.install "init_proj.sh"
+      bin.install "init_proj.js"
       bin.install "versions.sh"
       bin.install "gen_toolkit.sh"
       bin.install "genfile.js"
@@ -25,7 +25,7 @@ class Immutable < Formula
         elif [ "$1" == "-devkit" ]; then
           "$(brew --prefix)/bin/dev_kit_macos.sh"
         elif [ "$1" == "-init" ]; then
-          "$(brew --prefix)/bin/init_proj.sh" "$2"
+           node "$(brew --prefix)/bin/init_proj.js" "$2"
           "$(brew --prefix)/bin/gen_toolkit.sh" "$2_umbrella"
         elif [ "$1" == "-genfile" ]; then
           node "$(brew --prefix)/bin/genfile.js" "$2"
