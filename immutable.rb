@@ -1,7 +1,7 @@
 class Immutable < Formula
     desc "Setup development environment with Homebrew, asdf, Erlang, Elixir, Node.js, and more"
     homepage "https://github.com/macioa/immutablestack"
-    url "file://#{File.expand_path("ImmutableStack-v0.1.50.tar.gz", __dir__)}"
+    url "file://#{File.expand_path("ImmutableStack-v0.2.245.tar.gz", __dir__)}"
     # sha256 "88b621cffba66e524a54dfa21b890e36f39acf9f39c5f2c8b9f6f68df23c8048"
     license "Apache-2.0"
     version "0.0.0"
@@ -30,7 +30,7 @@ class Immutable < Formula
         elif [ "$1" == "-genfile" ]; then
           node "$(brew --prefix)/bin/genfile.js" "$2"
         elif [ "$1" == "-gen" ]; then
-          node "$(brew --prefix)/bin/gen" "$2"
+          ts-node "$(brew --prefix)/bin/gen" "$2"
         else
           echo "
             Usage: 
