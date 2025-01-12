@@ -1,7 +1,7 @@
 class Immutable < Formula
     desc "Setup development environment with Homebrew, asdf, Erlang, Elixir, Node.js, and more"
     homepage "https://github.com/macioa/immutablestack"
-    url "file://#{File.expand_path("ImmutableStack-v0.3.0.tar.gz", __dir__)}"
+    url "file://#{File.expand_path("ImmutableStack-v0.3.181.tar.gz", __dir__)}"
     # sha256 "88b621cffba66e524a54dfa21b890e36f39acf9f39c5f2c8b9f6f68df23c8048"
     license "Apache-2.0"
     version "0.0.0"
@@ -17,6 +17,7 @@ class Immutable < Formula
       bin.install "gen_toolkit.sh"
       bin.install "genfile.js"
       bin.install "gen.js"
+      bin.install "gentemplate.js"
       
       (bin/"immutable").write <<~EOS
         #!/bin/bash
@@ -31,14 +32,17 @@ class Immutable < Formula
           node "$(brew --prefix)/bin/genfile.js" "$2"
         elif [ "$1" == "-gen" ]; then
           ts-node "$(brew --prefix)/bin/gen" "$2"
+        elif [ "$1" == "-gentemplate" ]; then
+          node "$(brew --prefix)/bin/gentemplate.js" "$2" "$3"
         else
           echo "
             Usage: 
-              immutable -install                # Install core (required)
-              immutable -devkit                 # Install external dev tools (optional)
-              immutable -init _my_proj_name     # Initialize a new project
-              immutable -genfile _my_genname    # Create a generator file
-              immutable -gen _my_genfile_path   # Run generator with generator file
+              immutable -install                                # Install core (required)
+              immutable -devkit                                 # Install external dev tools (optional)
+              immutable -init _my_proj_name                     # Initialize a new project
+              immutable -genfile _my_genname                    # Create a generator file
+              immutable -gen _my_genfile_path                   # Run generator with generator file
+              immutable -gentemplate _my_genname _my filepath   # Create a string literal template from existing code
           "
         fi
       EOS
