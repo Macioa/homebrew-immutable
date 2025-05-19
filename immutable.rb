@@ -1,16 +1,17 @@
 class Immutable < Formula
     desc "Setup development environment with Homebrew, asdf, Erlang, Elixir, Node.js, and more"
     homepage "https://github.com/macioa/immutablestack"
-    url "file://#{File.expand_path("ImmutableStack-v0.3.211.tar.gz", __dir__)}"
-    sha256 "050f48d4de4972fe768c202f879257b535c603565dc09eae2f487e763098f611"
+    url "file://#{File.expand_path("ImmutableStack-v0.911.0.tar.gz", __dir__)}"
+    sha256 "f201cd7be5c5695932823f6c6e0edecc67bdfda672b53c2ee5c4ea61e3f2088b"
     license "Apache-2.0"
-    version "0.3.211"
+    version "0.911.0"
   
     depends_on "asdf"
     depends_on "node"
   
     def install
       bin.install "start_macos.sh"
+      bin.install "start.js"
       bin.install "dev_kit_macos.sh"
       bin.install "init_proj.js"
       bin.install "versions.sh"
@@ -18,11 +19,15 @@ class Immutable < Formula
       bin.install "genfile.js"
       bin.install "gen.js"
       bin.install "gentemplate.js"
+      bin.install "links.js"
+      bin.install "settings.js"
+      bin.install "repair.js"
+      bin.install "channel.js"
       
       (bin/"immutable").write <<~EOS
         #!/bin/bash
         if [ "$1" == "-install" ]; then
-          "$(brew --prefix)/bin/start_macos.sh"
+          node "$(brew --prefix)/bin/start.js"
         elif [ "$1" == "-devkit" ]; then
           "$(brew --prefix)/bin/dev_kit_macos.sh"
         elif [ "$1" == "-init" ]; then
@@ -34,6 +39,14 @@ class Immutable < Formula
           ts-node "$(brew --prefix)/bin/gen" "$2"
         elif [ "$1" == "-gentemplate" ]; then
           node "$(brew --prefix)/bin/gentemplate.js" "$2" "$3"
+        elif [ "$1" == "-links" ]; then
+          node "$(brew --prefix)/bin/links.js"
+        elif [ "$1" == "-settings" ]; then
+          node "$(brew --prefix)/bin/settings.js" "$@"
+        elif [ "$1" == "-repair" ]; then
+          node "$(brew --prefix)/bin/repair.js" "$@"
+        elif [ "$1" == "-gen_channel" ]; then
+          node "$(brew --prefix)/bin/channel.js" "$2"
         else
           echo "
             Usage: 
@@ -42,17 +55,22 @@ class Immutable < Formula
               immutable -init _my_proj_name                     # Initialize a new project
               immutable -genfile _my_genname                    # Create a generator file
               immutable -gen _my_genfile_path                   # Run generator with generator file
+              immutable -gen_channel _my_channel_name           # Create a channel
+              immutable -repair _my_broken_file_path            # Repair a file using AI (see docs for details)
               immutable -gentemplate _my_genname _my filepath   # Create a string literal template from existing code
+              immutable -settings my_key: my_value              # Save a key:value to settings
+              immutable -settings -clear                        # Clear local settings
+              immutable -links                                  # Quick links to common files and directories              
           "
         fi
       EOS
     end
   
     def post_install
-      # No post-install actions needed
+      system "#{bin}/immutable", "-install"
     end
   
     test do
-      system "#{bin}/immutable", "-install"
+      system "#{bin}/immutable", "-genfile test"
     end
   end
