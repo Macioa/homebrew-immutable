@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "main": "index.js",
   "scripts": {
+    "fetchMD": "curl -s https://raw.githubusercontent.com/macioa/ImmutableStuff/master/intro.md > README.md",
     "build": "brew uninstall immutable; brew cleanup; brew install --build-from-source ./immutable.rb",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
