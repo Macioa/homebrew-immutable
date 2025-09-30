@@ -1,10 +1,12 @@
 {
   "name": "homebrew-immutable",
-  "version": "0.0.0",
+  "version": "0.911.0",
   "main": "index.js",
   "scripts": {
     "fetchMD": "curl -s https://raw.githubusercontent.com/macioa/ImmutableStuff/master/intro.md > README.md",
-    "build": "brew uninstall immutable; brew cleanup; brew install --build-from-source ./immutable.rb",
+    "sync-version": "./sync-version.sh",
+    "update-sha": "./update-sha.sh",
+    "build": "./sync-version.sh && ./build.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
