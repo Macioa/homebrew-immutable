@@ -1,0 +1,33 @@
+name: Test Install
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: ['*']
+
+jobs:
+  test-install:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install Homebrew
+      run: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        echo "$(/opt/homebrew/bin/brew shellenv)" >> $GITHUB_ENV
+        source $GITHUB_ENV
+    
+    - name: Install formula dependencies
+      run: |
+        brew install asdf node
+    
+    - name: Install Immutable formula
+      run: |
+        brew install --build-from-source ./immutable.rb
+    
+    - name: Run installation tests
+      run: |
+        chmod +x ./test_install.sh
+        ./test_install.sh
