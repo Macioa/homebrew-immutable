@@ -2,9 +2,9 @@ class Immutable < Formula
     desc "Setup development environment with Homebrew, asdf, Erlang, Elixir, Node.js, and more"
     homepage "https://github.com/macioa/immutablestack"
     url "file://#{File.expand_path("ImmutableStack-v0.911.0.tar.gz", __dir__)}"
-    sha256 "f201cd7be5c5695932823f6c6e0edecc67bdfda672b53c2ee5c4ea61e3f2088b"
+    sha256 "67def1221d8a5f19a693b5018f511887b95b2dac922b8493aba41b10d679aba1"
     license "Apache-2.0"
-    version "0.911.0"
+    version "v0.911.0"
   
     depends_on "asdf"
     depends_on "node"
