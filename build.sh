@@ -3,20 +3,16 @@
 # Get Homebrew prefix dynamically
 HOMEBREW_PREFIX=$(brew --prefix)
 
-# Get username for tap (try GitHub username from remote, then error if not found)
+# Get username for tap (try GitHub username from remote, then fallback to whoami)
 USERNAME=$(git config --get remote.origin.url 2>/dev/null | sed -n 's/.*github\.com[:/]\([^/]*\)\/.*/\1/p')
 if [ -z "$USERNAME" ]; then
-    echo "Error: Could not determine GitHub username from git remote."
-    echo "Please ensure you have a GitHub remote configured:"
-    echo "  git remote add origin https://github.com/yourusername/yourrepo.git"
-    echo "Or run this script from a directory with a GitHub remote."
-    exit 1
+    USERNAME=$(whoami)
 fi
 TAP_DIR="$HOMEBREW_PREFIX/Library/Taps/$USERNAME/homebrew-immutable/Formula"
 
-# Extract version from package.json (single source of truth)
-VERSION=$(node -p "require('./package.json').version")
-TARFILE="ImmutableStack-v$VERSION.tar.gz"
+# Extract version from immutable.rb
+VERSION=$(grep 'version "' immutable.rb | sed 's/.*version "\(.*\)".*/\1/')
+TARFILE="ImmutableStack-$VERSION.tar.gz"
 
 echo "Building Immutable version: $VERSION"
 echo "Using tar file: $TARFILE"

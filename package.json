@@ -1,6 +1,6 @@
 {
   "name": "homebrew-immutable",
-  "version": "0.911.0",
+  "version": "v0.911.071",
   "main": "index.js",
   "scripts": {
     "fetchMD": "curl -s https://raw.githubusercontent.com/macioa/ImmutableStuff/master/intro.md > README.md",

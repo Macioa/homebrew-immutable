@@ -1,0 +1,38 @@
+name: Weekly Install Test
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9 AM UTC
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  test-install:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Homebrew
+      run: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+        
+    - name: Install dependencies
+      run: |
+        brew install asdf node
+        
+    - name: Build and install Immutable
+      run: |
+        ./build.sh
+        
+    - name: Run install test
+      run: |
+        ./test_install.sh
+        
+    - name: Cleanup
+      if: always()
+      run: |
+        brew uninstall immutable 2>/dev/null || true
+        brew cleanup
