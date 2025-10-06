@@ -11,23 +11,29 @@ jobs:
     runs-on: macos-latest
     
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install Homebrew
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Homebrew
       run: |
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        echo "$(/opt/homebrew/bin/brew shellenv)" >> $GITHUB_ENV
-        source $GITHUB_ENV
-    
-    - name: Install formula dependencies
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+        
+    - name: Install dependencies
       run: |
         brew install asdf node
-    
-    - name: Install Immutable formula
+        
+    - name: Build and install Immutable
       run: |
-        brew install --build-from-source ./immutable.rb
-    
-    - name: Run installation tests
+        ./build.sh
+        
+    - name: Run install test
       run: |
-        chmod +x ./test_install.sh
         ./test_install.sh
+        
+    - name: Cleanup
+      if: always()
+      run: |
+        brew uninstall immutable 2>/dev/null || true
+        brew cleanup
